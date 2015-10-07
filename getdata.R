@@ -7,9 +7,14 @@ if (!file.exists("household_power_consumption.txt")) {
         download.file(file_url, "householdpowerconsumption.zip", mode = "wb")
         unzip("householdpowerconsumption.zip")
 }
-data <- read.table("household_power_consumption.txt", header = TRUE,
-                   sep = "?", colClasses =   )
+data <- read.table("household_power_consumption.txt", na.strings = "?",
+                   stringsAsFactors = FALSE, header = TRUE,
+                   sep = ";")
+data$Date <- as.Date(data$Date, format = "%d/%m/%Y" )
 
-data$Date <- as.date(data$Date)
-data$Time <- strptime(data$Time)
-5+1
+data$temp <- paste(data$Date, data$Time, sep = " ")
+data$temp
+data$Time <- strptime(data$temp, format = "%Y-%m-%d %H:%M:%S", tz = "EST")
+febdata <- subset(data, Date == "2007-02-01" | Date == "2007-02-02")
+
+
